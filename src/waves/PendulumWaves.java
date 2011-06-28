@@ -59,7 +59,7 @@ public class PendulumWaves extends JApplet {
             = new Ellipse2D.Double(SEP / -4, SEP / -4, SEP / 2, SEP / 2);
 
         private final double start;
-        private boolean running;
+        private volatile boolean running;
 
         public Display() {
             setPreferredSize(new Dimension(WIDTH, HEIGHT));
