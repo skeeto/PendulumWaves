@@ -53,8 +53,7 @@ public class PendulumWaves extends JApplet {
         public static final double YSCALE = 2.25;
         public static final int COUNT = 15;
         public static final int MIN_RATE = 51;
-        public static final double SEP
-            = (WIDTH * YSCALE / HEIGHT) / (COUNT + 1);
+        public static final double SEP = (WIDTH * YSCALE / HEIGHT) / COUNT;
         public static final int SLEEP = 20;
         public static final Shape BALL
             = new Ellipse2D.Double(SEP / -4, SEP / -4, SEP / 2, SEP / 2);
@@ -84,7 +83,7 @@ public class PendulumWaves extends JApplet {
             g.fillRect(0, 0, WIDTH, HEIGHT);
             g.translate(0, HEIGHT / 2);
             g.scale(HEIGHT / YSCALE, HEIGHT / YSCALE);
-            g.translate(SEP, 0);
+            g.translate(SEP / 2, 0);
 
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                                RenderingHints.VALUE_ANTIALIAS_ON);
