@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<project name="PendulumWaves" default="jar">
+  <!-- Project-specific configuration -->
+  <property name="package" value="waves"/>
+  <property name="main.class" value="${package}.${ant.project.name}"/>
+  <property name="jar.file" value="${ant.project.name}.jar"/>
+
+  <!-- Standard Directory Layout -->
+  <property name="src.dir" value="src"/>
+  <property name="build.dir" value="build"/>
+  <property name="build.classes.dir" value="${build.dir}/classes"/>
+  <property name="dist.dir" value="dist"/>
+
+  <!-- Targets -->
+
+  <target name="init">
+    <mkdir dir="${build.classes.dir}"/>
+    <mkdir dir="${dist.dir}"/>
+  </target>
+
+  <target name="compile" depends="init"
+	  description="Compile all source files.">
+    <javac srcdir="${src.dir}" destdir="${build.classes.dir}"
+	   optimize="on" debug="on" deprecation="on"
+	   includeantruntime="false">
+      <compilerarg value="-Xlint"/>
+    </javac>
+    <copy todir="${build.classes.dir}">
+      <fileset dir="${src.dir}" excludes="**/*.java"/>
+    </copy>
+  </target>
+
+  <target name="jar" depends="compile"
+	  description="Generate the jarfile distributable.">
+    <jar destfile="${dist.dir}/${jar.file}" basedir="${build.classes.dir}">
+      <manifest>
+        <attribute name="Main-Class" value="${main.class}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="run" depends="jar" description="Run the application.">
+    <java jar="${dist.dir}/${jar.file}" fork="true"/>
+  </target>
+
+  <target name="clean" description="Delete all generated files.">
+    <delete dir="${build.dir}"/>
+    <delete dir="${dist.dir}"/>
+  </target>
+
+  <target name="format" description="Run the indenter on all source files.">
+    <apply executable="astyle">
+      <arg value="--mode=java"/>
+      <arg value="--suffix=none"/>
+      <fileset dir="${src.dir}" includes="**/*.java"/>
+      <fileset dir="${test.dir}" includes="**/*.java"/>
+    </apply>
+  </target>
+</project>
