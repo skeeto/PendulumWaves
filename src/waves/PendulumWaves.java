@@ -24,9 +24,26 @@ public class PendulumWaves extends JApplet {
         JFrame frame = new JFrame(TITLE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.add(new Display());
+        frame.add(new Display().start());
         frame.pack();
         frame.setVisible(true);
+    }
+
+    private Display display = new Display();
+
+    @Override
+    public void init() {
+        add(display);
+    }
+
+    @Override
+    public void start() {
+        display.start();
+    }
+
+    @Override
+    public void stop() {
+        display.stop();
     }
 
     private static class Display extends JComponent implements Runnable {
@@ -43,6 +60,7 @@ public class PendulumWaves extends JApplet {
             = new Ellipse2D.Double(SEP / -4, SEP / -4, SEP / 2, SEP / 2);
 
         private final double start;
+        private boolean running;
 
         public Display() {
             setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -50,6 +68,16 @@ public class PendulumWaves extends JApplet {
             new Thread(this).start();
         }
 
+        public Display start() {
+            running = true;
+            return this;
+        }
+
+        public void stop() {
+            running = false;
+        }
+
+        @Override
         public void paintComponent(Graphics graphics) {
             Graphics2D g = (Graphics2D) graphics;
             g.setColor(Color.BLACK);
@@ -76,9 +104,10 @@ public class PendulumWaves extends JApplet {
             }
         }
 
+        @Override
         public void run() {
             while (true) {
-                repaint();
+                if (running) repaint();
                 try {
                     Thread.sleep(SLEEP);
                 } catch (Exception e) {

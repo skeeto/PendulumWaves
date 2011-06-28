@@ -37,10 +37,17 @@
         <attribute name="Main-Class" value="${main.class}"/>
       </manifest>
     </jar>
+    <copy file="src/index.html" todir="${dist.dir}"/>
   </target>
 
   <target name="run" depends="jar" description="Run the application.">
     <java jar="${dist.dir}/${jar.file}" fork="true"/>
+  </target>
+
+  <target name="applet" depends="jar" description="Run the applet version.">
+    <exec executable="appletviewer">
+      <arg value="${dist.dir}/index.html"/>
+    </exec>
   </target>
 
   <target name="clean" description="Delete all generated files.">
